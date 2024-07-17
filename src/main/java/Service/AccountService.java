@@ -31,8 +31,8 @@ public class AccountService {
 
     public Account loginAccount(Account account) {
         Account userCredentials = this.accountDAO.getAccountByUsername(account.getUsername());
-        if (userCredentials != null
-        && userCredentials.getPassword() == account.getPassword()) {
+        if ((userCredentials != null)
+        && userCredentials.getPassword().equalsIgnoreCase(account.getPassword())) {
             return userCredentials;
         }
         return null;
