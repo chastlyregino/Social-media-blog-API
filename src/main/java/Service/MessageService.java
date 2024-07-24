@@ -25,11 +25,12 @@ public class MessageService {
     }
 
     public Message addMessage(Message message) {
-        if (message.getMessage_text() != ""
+        if (!message.getMessage_text().isEmpty()
             && message.getMessage_text().length() < 256
             && this.accountDAO.getAccountById(message.getPosted_by()) != null) {
                 return this.messageDAO.createNewMessage(message);
         }
+        
         return null;
     }
 
@@ -41,12 +42,17 @@ public class MessageService {
         return this.messageDAO.deleteMessageById(id);
     }
 
-    public Message updateMessage(Message message) {
-        if (this.messageDAO.getMessageById(message.getMessage_id()) != null
-            && message.getMessage_text() != ""
+    public Message updateMessage(Message message, int id) {
+        Message otherMessage = this.messageDAO.getMessageById(id);
+
+        if (otherMessage != null
+            && !message.getMessage_text().isEmpty()
             && message.getMessage_text().length() < 256) {
-                return this.messageDAO.updateMessageById(message);
+                this.messageDAO.updateMessageById(message, id);
+
+                return this.messageDAO.getMessageById(id);
         }
+
         return null;
     }
 
